@@ -1,0 +1,276 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>javascript-encoding | May</title><meta name="keywords" content="JavaScript"><meta name="author" content="李文哲"><meta name="copyright" content="李文哲"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="Does JavaScript use UCS-2 or UTF-16 encoding? Since I couldn’t find a definitive answer to this question anywhere, I decided to look into it. The answer depends on what you’re referring to: the JavaSc">
+<meta property="og:type" content="article">
+<meta property="og:title" content="javascript-encoding">
+<meta property="og:url" content="https://lwzcode.github.io/2023/04/26/javascript-encoding/index.html">
+<meta property="og:site_name" content="May">
+<meta property="og:description" content="Does JavaScript use UCS-2 or UTF-16 encoding? Since I couldn’t find a definitive answer to this question anywhere, I decided to look into it. The answer depends on what you’re referring to: the JavaSc">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7">
+<meta property="article:published_time" content="2023-04-26T08:53:07.000Z">
+<meta property="article:modified_time" content="2023-12-06T11:20:21.521Z">
+<meta property="article:author" content="李文哲">
+<meta property="article:tag" content="JavaScript">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://lwzcode.github.io/2023/04/26/javascript-encoding/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery@2/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery@2/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'javascript-encoding',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2023-12-06 19:20:21'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 5.4.1"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/avatar.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data is-center"><div class="data-item"><a href="/archives/"><div class="headline">文章</div><div class="length-num">26</div></a></div><div class="data-item"><a href="/tags/"><div class="headline">标签</div><div class="length-num">19</div></a></div><div class="data-item"><a href="/categories/"><div class="headline">分类</div><div class="length-num">12</div></a></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 文章</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 链接</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="not-top-img" id="page-header"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">May</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 文章</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 链接</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav></header><main class="layout" id="content-inner"><div id="post"><div id="post-info"><h1 class="post-title">javascript-encoding</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2023-04-26T08:53:07.000Z" title="发表于 2023-04-26 16:53:07">2023-04-26</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2023-12-06T11:20:21.521Z" title="更新于 2023-12-06 19:20:21">2023-12-06</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/JavaScript/">JavaScript</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="javascript-encoding"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span><span class="post-meta-separator">|</span><span class="post-meta-commentcount"><i class="far fa-comments fa-fw post-meta-icon"></i><span class="post-meta-label">评论数:</span><a href="/2023/04/26/javascript-encoding/#post-comment" itemprop="discussionUrl"><span class="valine-comment-count" data-xid="/2023/04/26/javascript-encoding/" itemprop="commentCount"></span></a></span></div></div></div><article class="post-content" id="article-container"><p>Does JavaScript use UCS-2 or UTF-16 encoding? Since I couldn’t find a definitive answer to this question anywhere, I decided to look into it. The answer depends on what you’re referring to: the JavaScript engine, or JavaScript at the language level.</p>
+<p>Let’s start with the basics…</p>
+<h1 id="The-notorious-BMP"><a href="#The-notorious-BMP" class="headerlink" title="The notorious BMP"></a>The notorious BMP</h1><p>Unicode identifies characters by an unambiguous name and an integer number called its code point. For example, the © character is named “copyright sign” and has U+00A9 — 0xA9 can be written as 169 in decimal — as its code point.</p>
+<p>The Unicode code space is divided into seventeen planes of 2^16 (65,536) code points each. Some of these code points have not yet been assigned character values, some are reserved for private use, and some are permanently reserved as non-characters. The code points in each plane have the hexadecimal values xy0000 to xyFFFF, where xy is a hex value from 00 to 10, signifying which plane the values belong to.</p>
+<p>The first plane (xy is 00) is called the Basic Multilingual Plane or BMP. It contains the code points from U+0000 to U+FFFF, which are the most frequently used characters.</p>
+<p>The other sixteen planes (U+010000 → U+10FFFF) are called supplementary planes or astral planes. I won’t discuss them here; just remember that there are BMP characters and non-BMP characters, the latter of which are also known as supplementary characters or astral characters.</p>
+<h1 id="Differences-between-UCS-2-and-UTF-16"><a href="#Differences-between-UCS-2-and-UTF-16" class="headerlink" title="Differences between UCS-2 and UTF-16"></a>Differences between UCS-2 and UTF-16</h1><p>Both UCS-2 and UTF-16 are character encodings for Unicode.</p>
+<p>UCS-2 (2-byte Universal Character Set) produces a fixed-length format by simply using the code point as the 16-bit code unit. This produces exactly the same result as UTF-16 for the majority of all code points in the range from 0 to 0xFFFF (i.e. the BMP).</p>
+<p>UTF-16 (16-bit Unicode Transformation Format) is an extension of UCS-2 that allows representing code points outside the BMP. It produces a variable-length result of either one or two 16-bit code units per code point. This way, it can encode code points in the range from 0 to 0x10FFFF.</p>
+<p>For example, in both UCS-2 and UTF-16, the BMP character U+00A9 copyright sign (©) is encoded as 0x00A9.</p>
+<h1 id="Surrogate-pairs"><a href="#Surrogate-pairs" class="headerlink" title="Surrogate pairs"></a>Surrogate pairs</h1><p>Characters outside the BMP, e.g. U+1D306 tetragram for centre (𝌆), can only be encoded in UTF-16 using two 16-bit code units: 0xD834 0xDF06. This is called a surrogate pair. Note that a surrogate pair only represents a single character.</p>
+<p>The first code unit of a surrogate pair is always in the range from 0xD800 to 0xDBFF, and is called a high surrogate or a lead surrogate.</p>
+<p>The second code unit of a surrogate pair is always in the range from 0xDC00 to 0xDFFF, and is called a low surrogate or a trail surrogate.</p>
+<p>UCS-2 lacks the concept of surrogate pairs, and therefore interprets 0xD834 0xDF06 (the previous UTF-16 encoding) as two separate characters.</p>
+<p>Converting between code points and surrogate pairs<br>Section 3.7 of The Unicode Standard 3.0 defines the algorithms for converting to and from surrogate pairs.</p>
+<p>A code point C greater than 0xFFFF corresponds to a surrogate pair <code>&lt;H, L&gt;</code> as per the following formula:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">H = <span class="title class_">Math</span>.<span class="title function_">floor</span>((C - <span class="number">0x10000</span>) / <span class="number">0x400</span>) + <span class="number">0xD800</span></span><br><span class="line">L = (C - <span class="number">0x10000</span>) % <span class="number">0x400</span> + <span class="number">0xDC00</span></span><br></pre></td></tr></table></figure>
+<p>The reverse mapping, i.e. from a surrogate pair <code>&lt;H, L&gt;</code> to a Unicode code point C, is given by:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">C = (H - <span class="number">0xD800</span>) * <span class="number">0x400</span> + L - <span class="number">0xDC00</span> + <span class="number">0x10000</span></span><br></pre></td></tr></table></figure>
+<p>Ok, so what about JavaScript?<br>ECMAScript, the standardized version of JavaScript, defines how characters should be interpreted:</p>
+<p>A conforming implementation of this International standard shall interpret characters in conformance with the Unicode Standard, Version 3.0 or later and ISO/IEC 10646-1 with either UCS-2 or UTF-16 as the adopted encoding form, implementation level 3. If the adopted ISO/IEC 10646-1 subset is not otherwise specified, it is presumed to be the BMP subset, collection 300. If the adopted encoding form is not otherwise specified, it is presumed to be the UTF-16 encoding form.</p>
+<p>In other words, JavaScript engines are allowed to use either UCS-2 or UTF-16.</p>
+<p>However, specific parts of the specification require some UTF-16 knowledge, regardless of the engine’s internal encoding.</p>
+<p>Of course, internal engine specifics don’t really matter to the average JavaScript developer. What’s far more interesting is what JavaScript considers to be “characters”, and how it exposes those:</p>
+<p>Throughout the rest of this document, the phrase code unit and the word character will be used to refer to a 16-bit unsigned value used to represent a single 16-bit unit of text.<br>The phrase Unicode character will be used to refer to the abstract linguistic or typographical unit represented by a single Unicode scalar value (which may be longer than 16 bits and thus may be represented by more than one code unit).<br>The phrase code point refers to such a Unicode scalar value.<br>Unicode character only refers to entities represented by single Unicode scalar values: the components of a combining character sequence are still individual “Unicode characters”, even though a user might think of the whole sequence as a single character.</p>
+<p>JavaScript treats code units as individual characters, while humans generally think in terms of Unicode characters. This has some unfortunate consequences for Unicode characters outside the BMP. Since surrogate pairs consist of two code units, ‘𝌆’.length == 2, even though there’s only one Unicode character there. The individual surrogate halves are being exposed as if they were characters: <code>&#39;𝌆&#39; == &#39;\uD834\uDF06&#39;</code>.</p>
+<p>Remind you of something? It should, ’cause this is almost exactly how UCS-2 works. (The only difference is that technically, UCS-2 doesn’t allow surrogate characters, while JavaScript strings do.)</p>
+<p>You could argue that it resembles UTF-16, except unmatched surrogate halves are allowed, surrogates in the wrong order are allowed, and surrogate halves are exposed as separate characters. I think you’ll agree that it’s easier to think of this behavior as “UCS-2 with surrogates”.</p>
+<p>This UCS-2-like behavior affects the entire language — for example, regular expressions for ranges of supplementary characters are much harder to write than in languages that do support UTF-16.</p>
+<p>Surrogate pairs are only recombined into a single Unicode character when they’re displayed by the browser (during layout). This happens outside of the JavaScript engine. To demonstrate this, you could write out the high surrogate and the low surrogate in separate document.write() calls: document.write(‘\uD834’); document.write(‘\uDF06’);. This ends up getting rendered as 𝌆 — one glyph.</p>
+<p>Conclusion<br>JavaScript engines are free to use UCS-2 or UTF-16 internally. Most engines that I know of use UTF-16, but whatever choice they made, it’s just an implementation detail that won’t affect the language’s characteristics.</p>
+<p>The ECMAScript/JavaScript language itself, however, exposes characters according to UCS-2, not UTF-16.</p>
+<p>If you ever need to <a target="_blank" rel="noopener" href="https://mathiasbynens.be/notes/javascript-escapes">escape a Unicode character</a>, breaking it up into surrogate halves when necessary, feel free to use my <a target="_blank" rel="noopener" href="https://mothereff.in/js-escapes#1%F0%9D%8C%86">JavaScript escaper</a> tool.</p>
+<p>If you want to <a target="_blank" rel="noopener" href="https://mothereff.in/byte-counter#%F0%9D%8C%86">count the number of Unicode characters</a> in a JavaScript string, or create a string based on a non-BMP Unicode code point, you could use <a target="_blank" rel="noopener" href="https://mths.be/punycode">Punycode.js</a>’s utility functions to convert between UCS-2 strings and UTF-16 code points:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// `String.length` replacement that only counts full Unicode characters</span></span><br><span class="line">punycode.<span class="property">ucs2</span>.<span class="title function_">decode</span>(<span class="string">&#x27;𝌆&#x27;</span>).<span class="property">length</span>; <span class="comment">// 1</span></span><br><span class="line"><span class="comment">// `String.fromCharCode` replacement that doesn’t make you enter the surrogate halves separately</span></span><br><span class="line">punycode.<span class="property">ucs2</span>.<span class="title function_">encode</span>([<span class="number">0x1D306</span>]); <span class="comment">// &#x27;𝌆&#x27;</span></span><br><span class="line">punycode.<span class="property">ucs2</span>.<span class="title function_">encode</span>([<span class="number">119558</span>]); <span class="comment">// &#x27;𝌆&#x27;</span></span><br></pre></td></tr></table></figure>
+<p>ECMAScript 6 will support a new kind of escape sequence in strings, namely <a target="_blank" rel="noopener" href="https://mathiasbynens.be/notes/javascript-escapes#unicode-code-point">Unicode code point escapes</a> e.g. <code>\u&#123;1D306&#125;</code>. Additionally, it will define String.fromCodePoint and String#codePointAt, both of which accept code points rather than code units.</p>
+<p>Thanks to Jonas ‘nlogax’ Westerlund, Andrew ‘bobince’ Clover, and Tab Atkins Jr. for inspiring me to look into this, and for helping me out with their explanations.</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">李文哲</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://lwzcode.github.io/2023/04/26/javascript-encoding/">https://lwzcode.github.io/2023/04/26/javascript-encoding/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://lwzcode.github.io" target="_blank">May</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/JavaScript/">JavaScript</a></div><div class="post_share"><div class="social-share" data-image="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2023/12/06/%E6%89%8B%E5%86%99promise/"><img class="prev-cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">手写promise</div></div></a></div><div class="next-post pull-right"><a href="/2023/04/01/Vue%E4%B9%BE%E5%9D%A4%E5%BE%AE%E5%BA%94%E7%94%A8%E7%9A%84%E4%BD%BF%E7%94%A8%E5%92%8C%E9%83%A8%E7%BD%B2/"><img class="next-cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">Vue乾坤微应用的使用和部署</div></div></a></div></nav><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/avatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">李文哲</div><div class="author-info__description"></div></div><div class="card-info-data is-center"><div class="card-info-data-item"><a href="/archives/"><div class="headline">文章</div><div class="length-num">26</div></a></div><div class="card-info-data-item"><a href="/tags/"><div class="headline">标签</div><div class="length-num">19</div></a></div><div class="card-info-data-item"><a href="/categories/"><div class="headline">分类</div><div class="length-num">12</div></a></div></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/lwzcode"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/lwzcode" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:liwenzhe1996@gmail.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#The-notorious-BMP"><span class="toc-number">1.</span> <span class="toc-text">The notorious BMP</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Differences-between-UCS-2-and-UTF-16"><span class="toc-number">2.</span> <span class="toc-text">Differences between UCS-2 and UTF-16</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Surrogate-pairs"><span class="toc-number">3.</span> <span class="toc-text">Surrogate pairs</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/12/06/%E6%89%8B%E5%86%99Vue3%E5%93%8D%E5%BA%94%E5%BC%8F/" title="手写Vue3响应式">手写Vue3响应式</a><time datetime="2023-12-06T11:34:10.000Z" title="发表于 2023-12-06 19:34:10">2023-12-06</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/12/06/%E6%89%8B%E5%86%99promise/" title="手写promise">手写promise</a><time datetime="2023-12-06T11:26:40.000Z" title="发表于 2023-12-06 19:26:40">2023-12-06</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/04/26/javascript-encoding/" title="javascript-encoding">javascript-encoding</a><time datetime="2023-04-26T08:53:07.000Z" title="发表于 2023-04-26 16:53:07">2023-04-26</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/04/01/Vue%E4%B9%BE%E5%9D%A4%E5%BE%AE%E5%BA%94%E7%94%A8%E7%9A%84%E4%BD%BF%E7%94%A8%E5%92%8C%E9%83%A8%E7%BD%B2/" title="Vue乾坤微应用的使用和部署">Vue乾坤微应用的使用和部署</a><time datetime="2023-04-01T13:46:09.000Z" title="发表于 2023-04-01 21:46:09">2023-04-01</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/02/03/element-plus%E7%AC%94%E8%AE%B0/" title="element-plus笔记">element-plus笔记</a><time datetime="2023-02-03T06:14:24.000Z" title="发表于 2023-02-03 14:14:24">2023-02-03</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2019 - 2023 By 李文哲</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">本地搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"><script>function loadValine () {
+  function initValine () {
+    const valine = new Valine(Object.assign({
+      el: '#vcomment',
+      appId: 'rZnUp6JX8C0PpQfHxXcnk0nC-gzGzoHsz',
+      appKey: 'dIMnMrZ6UZjpviEX2aocdEQ5',
+      avatar: 'monsterid',
+      serverURLs: '',
+      emojiMaps: "",
+      path: window.location.pathname,
+      visitor: false
+    }, null))
+  }
+
+  if (typeof Valine === 'function') initValine() 
+  else getScript('https://cdn.jsdelivr.net/npm/valine/dist/Valine.min.js').then(initValine)
+}
+
+if ('Valine' === 'Valine' || !false) {
+  if (false) btf.loadComment(document.getElementById('vcomment'),loadValine)
+  else setTimeout(loadValine, 0)
+} else {
+  function loadOtherComment () {
+    loadValine()
+  }
+}</script></div><script defer="defer" id="ribbon" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-ribbon.min.js" size="150" alpha="0.6" zIndex="-1" mobile="false" data-click="false"></script><script id="click-heart" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/click-heart.min.js" async="async" mobile="false"></script><script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script><script>let pjaxSelectors = ["title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"]):not([href="/music/"]):not([href="/no-pjax/"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:send', function () {
+
+  // removeEventListener scroll 
+  window.tocScrollFn && window.removeEventListener('scroll', window.tocScrollFn)
+  window.scrollCollect && window.removeEventListener('scroll', scrollCollect)
+
+  typeof preloader === 'object' && preloader.initLoading()
+  document.getElementById('rightside').style.cssText = "opacity: ''; transform: ''"
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof chatBtnFn === 'function' && chatBtnFn()
+  typeof panguInit === 'function' && panguInit()
+
+  // google analytics
+  typeof gtag === 'function' && gtag('config', '', {'page_path': window.location.pathname});
+
+  // baidu analytics
+  typeof _hmt === 'object' && _hmt.push(['_trackPageview',window.location.pathname]);
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+
+  typeof preloader === 'object' && preloader.endLoading()
+})
+
+document.addEventListener('pjax:error', (e) => {
+  if (e.request.status === 404) {
+    pjax.loadUrl('/404.html')
+  }
+})</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
